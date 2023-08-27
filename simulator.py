@@ -14,11 +14,9 @@ errorCode = ctypes.windll.shcore.SetProcessDpiAwareness(2)
 ##
 #   CHANGEABLE PARAMETERS
 ##
-GRID_SIZE = (320,180)    # Should be multiples of 16 and 9 for best results on 16:9 screens
-NUM_MACHINES = 10   # Large numbers remove visible complexity
-
-# Large number of states causes more pseudo-random movement
-MIN_STATES = 10
+GRID_SIZE = (320,180)       # Should be multiples of 16 and 9 for best results on 16:9 screens
+NUM_MACHINES = 10           # Large numbers remove visible complexity
+MIN_STATES = 10             # Large number of states causes more random movement, less order
 MAX_STATES = 10
 ##
 #   END CHANGEABLE PARAMETERS
