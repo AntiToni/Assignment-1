@@ -1,10 +1,31 @@
 import pygame
 import ctypes
+from math import ceil
 from turingmachine import TuringMachine
 errorCode = ctypes.windll.shcore.SetProcessDpiAwareness(2)
 
-GRID_SIZE = (160,90)
-NUM_MACHINES = 2
+##
+#   CONTROLS
+#   H - HIDE TM HEADS
+#   ESC - END SIMULATION
+#   -/= - DECREASE/INCREASE SIMULATION SPEED
+##
+
+##
+#   CHANGEABLE PARAMETERS
+##
+GRID_SIZE = (320,180)    # Should be multiples of 16 and 9 for best results on 16:9 screens
+NUM_MACHINES = 10   # Large numbers remove visible complexity
+
+# Large number of states causes more pseudo-random movement
+MIN_STATES = 10
+MAX_STATES = 10
+##
+#   END CHANGEABLE PARAMETERS
+##
+
+START_POS = (GRID_SIZE[0]//2, GRID_SIZE[1]//2)  #   Generally looks best if start position is in centre
+STATE_RANGE = (MIN_STATES, MAX_STATES)
 
 pygame.init()
 screenSize = pygame.display.get_desktop_sizes()[0]
@@ -12,7 +33,7 @@ screen = pygame.display.set_mode((screenSize[0], screenSize[1]), pygame.FULLSCRE
 clock = pygame.time.Clock()
 running = True
 
-tileSize = screenSize[0]/GRID_SIZE[0]
+tileSize = (screenSize[0]/float(GRID_SIZE[0]), screenSize[1]/float(GRID_SIZE[1]))
 enabledTiles = {}
 
 for x in range(GRID_SIZE[0]):
@@ -26,7 +47,7 @@ showHeads = True
 machineList = []
 
 for i in range(NUM_MACHINES):
-    machineList.append(TuringMachine(enabledTiles))
+    machineList.append(TuringMachine(enabledTiles, GRID_SIZE, START_POS, STATE_RANGE))
 
 while running:
     # poll for events
@@ -61,17 +82,17 @@ while running:
         for machine in machineList:
             machine.step()
 
-    screen.fill('pink')
+    screen.fill('black')
 
     for (x, y) in enabledTiles:
         tileVal = enabledTiles[(x, y)]
         if tileVal == 1:
-            tile = pygame.Rect(x*tileSize, y*tileSize, tileSize, tileSize)
-            pygame.draw.rect(screen, 'blue', tile, 0)
+            tile = pygame.Rect(ceil(x*tileSize[0]), ceil(y*tileSize[1]), ceil(tileSize[0]), ceil(tileSize[1]))
+            pygame.draw.rect(screen, 'white', tile, 0)
         elif showHeads and tileVal != 0:
             # Draw head in red
-            tile = pygame.Rect(x*tileSize, y*tileSize, tileSize, tileSize)
-            pygame.draw.rect(screen, 'green', tile, 0)
+            tile = pygame.Rect(ceil(x*tileSize[0]), ceil(y*tileSize[1]), ceil(tileSize[0]), ceil(tileSize[1]))
+            pygame.draw.rect(screen, 'red', tile, 0)
     
     pygame.display.flip()
 

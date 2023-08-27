@@ -6,7 +6,7 @@ MAX_STATES = 5
 DIR_LIST = ['U','D','L','R']
 
 class TuringMachine:
-    def __init__(self, tape : dict, startPos = (80,45), program : str = None, gridSize = (160,90)):
+    def __init__(self, tape : dict, gridSize, startPos, stateRange = (MIN_STATES, MAX_STATES), program : str = None):
         self.tape = tape
         self.trf = {}
         self.head = list(startPos)
@@ -18,7 +18,7 @@ class TuringMachine:
                 s1, r, s2, w, dir = line.split(',')
                 self.trf[int(s1),int(r)] = (int(s2), int(w), dir)
         else:
-            numStates = randint(MAX_STATES,MAX_STATES)
+            numStates = randint(stateRange[0], stateRange[1])
             for s1 in range(numStates):
                 for r in range(0,2):
                     self.trf[s1,r] = (randint(0,numStates-1), randint(0,1), DIR_LIST[randint(0,3)])
@@ -64,3 +64,6 @@ class TuringMachine:
                 self.head[1] -= self.gridSize[1]
         else:
             raise 'You done entered a wrong direction.'
+        
+    def toString(self) -> str:
+        pass
