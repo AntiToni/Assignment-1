@@ -4,4 +4,4 @@ This is a basic 2D turing machine generator/simulator program inspired by Langto
 ## Instructions
 1. Ensure python is downloaded and run ```pip install pygame```.
 2. Set desired parameters in simulator.py.
-3. Run simulator.py.
+3. Run simulator.py in python.
