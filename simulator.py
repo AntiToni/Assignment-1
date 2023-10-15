@@ -9,13 +9,6 @@ from turingmachine import TuringMachine
 errorCode = ctypes.windll.shcore.SetProcessDpiAwareness(2)
 
 ##
-#   CONTROLS
-#   H - HIDE TM HEADS
-#   ESC - END SIMULATION
-#   -/= - DECREASE/INCREASE SIMULATION SPEED
-##
-
-##
 #   CHANGEABLE PARAMETERS
 ##
 GRID_SIZE = (320,180)       # Should be multiples of 16 and 9 for best results on 16:9 screens
@@ -23,7 +16,7 @@ NUM_MACHINES = 2            # Large numbers remove visible complexity
 MIN_STATES = 50             # Large number of states causes more random movement, less order
 MAX_STATES = 50
 LOAD_FILE = 'chaotic'        # Leave empty to randomly generate
-LOAD_FROM_FILE = True
+LOAD_FROM_FILE = True       # True if loading from file, False if randomly generating
 
 BG_COLOUR = 'black'
 TILE_COLOUR = 'white'
