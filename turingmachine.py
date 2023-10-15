@@ -1,12 +1,18 @@
 from random import randint, random
+from time import perf_counter
 from math import pow
+import numpy as np
 
 MIN_STATES = 5
 MAX_STATES = 5
 DIR_LIST = ['U','D','L','R']
 
 class TuringMachine:
-    def __init__(self, tape : dict, gridSize, startPos, stateRange = (MIN_STATES, MAX_STATES), program : str = None):
+    totalReadTime = 0.0
+    totalUpdateTime = 0.0
+    overallTime = 0.0
+
+    def __init__(self, tape : np.ndarray, gridSize, startPos, stateRange = (MIN_STATES, MAX_STATES), program : str = None):
         self.tape = tape
         self.trf = {}
         self.head = list(startPos)
@@ -16,34 +22,33 @@ class TuringMachine:
         if program is not None:
             for line in program.splitlines():
                 s1, r, s2, w, dir = line.split(',')
-                self.trf[int(s1),int(r)] = (int(s2), int(w), dir)
+                self.trf[int(s1),r.lower() == 'true'] = (int(s2), w.lower() == 'true', dir)
         else:
             numStates = randint(stateRange[0], stateRange[1])
             for s1 in range(numStates):
                 for r in range(0,2):
-                    self.trf[s1,r] = (randint(0,numStates-1), randint(0,1), DIR_LIST[randint(0,3)])
+                    self.trf[s1,bool(r)] = (randint(0,numStates-1), bool(randint(0,1)), DIR_LIST[randint(0,3)])
 
     def step(self):
-        r = self.tape[tuple(self.head)] # 0 = disabled, 1 = enabled, 2 = head disabled, 3 = head enabled
-        if r > 1:
-            r -= 2
-        action = self.trf.get((self.state, r))
+        updatePos1 = None
+        updatePos2 = None
+        changed = False
+
+        state, tape = self.state, self.tape
+        head_x, head_y = self.head
+        r = tape[head_x][head_y] # False = disabled, True = enabled
+        action = self.trf.get((state, r))
         if action:
             s2, w, dir = action
-            if w == 1:
-                self.tape[tuple(self.head)] = 1
-            else:
-                self.tape[tuple(self.head)] = 0
+            changed = r != w
+            tape[head_x, head_y] = w
             self.moveHead(dir)
 
-            # Head of tape should be different colour
-            headVal = self.tape[tuple(self.head)]
-            if headVal in [0,2]:
-                self.tape[tuple(self.head)] = 2
-            elif headVal in [1,3]:
-                self.tape[tuple(self.head)] = 3
-
+            updatePos2 = tuple(self.head)
             self.state = s2
+            updatePos1 = (head_x, head_y) if changed else None
+        
+        return updatePos1, updatePos2
 
     def moveHead(self, dir : str):
         if dir == 'L':
@@ -65,5 +70,9 @@ class TuringMachine:
         else:
             raise 'You done entered a wrong direction.'
         
-    def toString(self) -> str:
-        pass
+    def __str__(self):
+        output = ''
+        for (s1,r),(s2,w,dir) in self.trf.items():
+            output += str(s1) + ',' + str(r) + ',' + str(s2) + ',' + str(w) + ',' + str(dir) + '\n'
+
+        return output[:-1]

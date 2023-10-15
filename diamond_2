@@ -1,0 +1,16 @@
+0,False,4,True,L
+0,True,5,False,U
+4,False,3,True,D
+4,True,4,True,L
+1,False,5,True,U
+1,True,6,False,R
+5,False,0,True,L
+5,True,5,True,U
+2,False,6,True,R
+2,True,7,False,D
+6,False,1,True,U
+6,True,6,True,R
+3,False,7,True,D
+3,True,4,False,L
+7,False,2,True,R
+7,True,7,True,D

@@ -1,0 +1,8 @@
+0,True,3,False,D
+1,True,0,False,L
+2,True,1,False,U
+3,True,2,False,R
+0,False,1,True,U
+1,False,2,True,R
+2,False,3,True,D
+3,False,0,True,L
