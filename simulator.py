@@ -6,7 +6,10 @@ import numpy as np
 import ctypes
 from math import ceil
 from turingmachine import TuringMachine
-errorCode = ctypes.windll.shcore.SetProcessDpiAwareness(2)
+
+from sys import platform
+if platform == "win32":
+    errorCode = ctypes.windll.shcore.SetProcessDpiAwareness(2)
 
 ##
 #   CHANGEABLE PARAMETERS
