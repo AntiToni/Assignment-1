@@ -18,7 +18,7 @@ GRID_SIZE = (320,180)       # Should be multiples of 16 and 9 for best results o
 NUM_MACHINES = 2            # Large numbers remove visible complexity
 MIN_STATES = 50             # Large number of states causes more random movement, less order
 MAX_STATES = 50
-LOAD_FILE = 'chaotic'        # Leave empty to randomly generate
+LOAD_FILE = 'raindrip'        # Leave empty to randomly generate
 LOAD_FROM_FILE = True       # True if loading from file, False if randomly generating
 
 BG_COLOUR = 'black'
